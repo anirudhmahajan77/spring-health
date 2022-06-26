@@ -1,42 +1,43 @@
 package com.spring.health.hospital.Controller;
 
-import com.spring.health.hospital.Model.Hospital;
-import com.spring.health.hospital.Model.RequestModel.AddHospital;
-import com.spring.health.hospital.Service.HospitalService;
+import com.spring.health.hospital.Model.Doctor;
+import com.spring.health.hospital.Model.RequestModel.AddDoctor;
+import com.spring.health.hospital.Service.DoctorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/hospital")
-public class HospitalController {
+@RequestMapping("/api/v1/doctor")
+public class DoctorController {
 
     @Autowired
-    private HospitalService hospitalService;
+    DoctorService doctorService;
 
     @RequestMapping(value = "/getall", method = RequestMethod.GET)
-    public ResponseEntity getAllHospitals() {
-        Iterable<Hospital> response = hospitalService.getAllHospitals();
+    public ResponseEntity getAllDoctors() {
+        Iterable<Doctor> response = doctorService.getAllDoctors();
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
-    public ResponseEntity getHospitalById(@PathVariable String id) {
-        Hospital response = hospitalService.getHospitalById(id);
+    public ResponseEntity getDoctorById(@PathVariable String id) {
+        Doctor response = doctorService.getDoctorById(id);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ResponseEntity addNewHospital(@RequestBody AddHospital hospital) {
-        hospitalService.addHospital(hospital);
+    public ResponseEntity addNewDoctor(@RequestBody AddDoctor doctor) {
+        doctorService.addDoctor(doctor);
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity deleteHospitalById(@PathVariable String id){
-        hospitalService.deleteHospitalById(id);
+    public ResponseEntity deleteDoctorById(@PathVariable String id) {
+        doctorService.deleteDoctorById(id);
         return new ResponseEntity(HttpStatus.OK);
     }
+
 
 }

@@ -1,6 +1,7 @@
 package com.spring.health.hospital.Service;
 
 import com.spring.health.hospital.Model.Hospital;
+import com.spring.health.hospital.Model.RequestModel.AddHospital;
 import com.spring.health.hospital.Repository.HospitalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,10 +25,19 @@ public class HospitalService {
     }
 
 
-    public void addHospital(Hospital hospital) {
+    public void addHospital(AddHospital newHospital) {
+
+        Hospital hospital = new Hospital();
+
         int one = (int) UUID.randomUUID().toString().charAt(0);
         int two = (int) UUID.randomUUID().toString().charAt(0);
         hospital.setH_id("h" + one + two);
+
+        hospital.setName(newHospital.getName());
+        hospital.setAddress(newHospital.getAddress());
+        hospital.setAmbulances(newHospital.getAmbulances());
+        hospital.setWards(newHospital.getWards());
+
         hospitalRepository.save(hospital);
     }
 
