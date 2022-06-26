@@ -8,6 +8,10 @@ import com.spring.health.hospital.Repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.Query;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -48,9 +52,7 @@ public class PatientService {
     public boolean deletePatientById(String id) {
         Optional<Patient> data = patientRepository.findById(id);
         if (data.isPresent()) {
-            Patient patient = data.get();
-            patient.setDoctor(null);
-            patientRepository.save(patient);
+            patientRepository.delete(data.get());
             return true;
         }
         return false;

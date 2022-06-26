@@ -12,6 +12,7 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@NamedQuery(name = "delete" , query = "UPDATE patient SET doctor = null WHERE p_id = :id")
 public class Patient {
 
     @Id
@@ -30,7 +31,7 @@ public class Patient {
     @Enumerated(EnumType.STRING)
     Gender gender;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(name = "doctor_fk", referencedColumnName = "d_id")
     Doctor doctor;
 }
