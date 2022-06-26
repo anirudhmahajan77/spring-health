@@ -33,7 +33,6 @@ public class Doctor {
     Integer experience;
     Integer age;
 
-
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "hospital_fk", referencedColumnName = "h_id")
     Hospital hospital;

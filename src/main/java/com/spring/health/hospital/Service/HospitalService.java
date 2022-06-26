@@ -50,4 +50,8 @@ public class HospitalService {
         return 0;
     }
 
+    public void updateHospital(Hospital updateHospital){
+        hospitalRepository.save(updateHospital);
+    }
+
 }

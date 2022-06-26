@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.print.Doc;
+
 @RestController
 @RequestMapping("/api/v1/doctor")
 public class DoctorController {
@@ -39,5 +41,11 @@ public class DoctorController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
+
+    @RequestMapping(value = "/update", method = RequestMethod.PUT)
+    public ResponseEntity updateDoctor(@RequestBody Doctor updatedDoctor) {
+        doctorService.updateDoctor(updatedDoctor);
+        return new ResponseEntity(HttpStatus.OK);
+    }
 
 }

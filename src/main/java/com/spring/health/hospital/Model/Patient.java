@@ -30,7 +30,7 @@ public class Patient {
     @Enumerated(EnumType.STRING)
     Gender gender;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "doctor_fk", referencedColumnName = "d_id")
     Doctor doctor;
 }

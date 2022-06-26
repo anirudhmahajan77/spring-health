@@ -35,7 +35,17 @@ public class PatientController {
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
     public ResponseEntity deletePatientById(@PathVariable String id) {
-        patientService.deletePatientById(id);
+        boolean result = patientService.deletePatientById(id);
+        if(!result){
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
         return new ResponseEntity(HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/update", method = RequestMethod.PUT)
+    public ResponseEntity updatePatient(@RequestBody Patient updatedPatient){
+        patientService.updatePatient(updatedPatient);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
 }

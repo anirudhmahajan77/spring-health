@@ -7,6 +7,7 @@ import com.spring.health.hospital.Repository.HospitalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.print.Doc;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -48,10 +49,16 @@ public class DoctorService {
     public int deleteDoctorById(String id) {
         Optional<Doctor> data = doctorRepository.findById(id);
         if (data.isPresent()) {
+            data.get().setHospital(null);
+            doctorRepository.save(data.get());
             doctorRepository.delete(data.get());
             return 1;
         }
         return 0;
+    }
+
+    public void updateDoctor(Doctor updatedDoctor){
+        doctorRepository.save(updatedDoctor);
     }
 
 }

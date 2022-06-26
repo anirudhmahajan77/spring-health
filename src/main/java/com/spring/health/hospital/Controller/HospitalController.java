@@ -39,4 +39,10 @@ public class HospitalController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/update", method = RequestMethod.PUT)
+    public ResponseEntity updateHospital(@RequestBody Hospital updateHospital){
+        hospitalService.updateHospital(updateHospital);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
 }

@@ -45,14 +45,19 @@ public class PatientService {
         patientRepository.save(patient);
     }
 
-    public int deletePatientById(String id) {
+    public boolean deletePatientById(String id) {
         Optional<Patient> data = patientRepository.findById(id);
         if (data.isPresent()) {
-            patientRepository.delete(data.get());
-            return 1;
+            Patient patient = data.get();
+            patient.setDoctor(null);
+            patientRepository.save(patient);
+            return true;
         }
-        return 0;
+        return false;
     }
 
+    public void updatePatient(Patient updatePatient) {
+        patientRepository.save(updatePatient);
+    }
 
 }
