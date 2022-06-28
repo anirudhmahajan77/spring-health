@@ -16,7 +16,7 @@
         This is a spring Boot application working with JPA and MySQL to solve the complex problem
     </description>
     <properties>
-        <java.version>8</java.version>
+        <java.version>1.8</java.version>
     </properties>
     <dependencies>
 
