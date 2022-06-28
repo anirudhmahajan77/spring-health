@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/api/v1/hospital")
 public class HospitalController {
@@ -23,24 +25,30 @@ public class HospitalController {
 
     @RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
     public ResponseEntity getHospitalById(@PathVariable String id) {
-        Hospital response = hospitalService.getHospitalById(id);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        Optional<Hospital> response = hospitalService.getHospitalById(id);
+        if (response.isPresent()) {
+            return new ResponseEntity<>(response.get(), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ResponseEntity addNewHospital(@RequestBody AddHospital hospital) {
-        hospitalService.addHospital(hospital);
-        return new ResponseEntity(HttpStatus.OK);
+        String id = hospitalService.addHospital(hospital);
+        return new ResponseEntity(id, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity deleteHospitalById(@PathVariable String id){
-        hospitalService.deleteHospitalById(id);
-        return new ResponseEntity(HttpStatus.OK);
+    public ResponseEntity deleteHospitalById(@PathVariable String id) {
+        boolean response = hospitalService.deleteHospitalById(id);
+        if (response) {
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.PUT)
-    public ResponseEntity updateHospital(@RequestBody Hospital updateHospital){
+    public ResponseEntity updateHospital(@RequestBody Hospital updateHospital) {
         hospitalService.updateHospital(updateHospital);
         return new ResponseEntity(HttpStatus.OK);
     }

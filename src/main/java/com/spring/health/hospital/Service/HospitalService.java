@@ -19,19 +19,19 @@ public class HospitalService {
         return hospitalRepository.findAll();
     }
 
-    public Hospital getHospitalById(String id) {
-        Optional<Hospital> response = hospitalRepository.findById(id);
-        return response.get();
+    public Optional<Hospital> getHospitalById(String id) {
+        return hospitalRepository.findById(id);
     }
 
 
-    public void addHospital(AddHospital newHospital) {
+    public String addHospital(AddHospital newHospital) {
 
         Hospital hospital = new Hospital();
 
         int one = (int) UUID.randomUUID().toString().charAt(0);
         int two = (int) UUID.randomUUID().toString().charAt(0);
-        hospital.setH_id("h" + one + two);
+        String newId = "h" + one + two;
+        hospital.setH_id(newId);
 
         hospital.setName(newHospital.getName());
         hospital.setAddress(newHospital.getAddress());
@@ -39,18 +39,19 @@ public class HospitalService {
         hospital.setWards(newHospital.getWards());
 
         hospitalRepository.save(hospital);
+        return newId;
     }
 
-    public int deleteHospitalById(String id) {
+    public boolean deleteHospitalById(String id) {
         Optional<Hospital> data = hospitalRepository.findById(id);
-        if(data.isPresent()){
+        if (data.isPresent()) {
             hospitalRepository.delete(data.get());
-            return 1;
+            return true;
         }
-        return 0;
+        return false;
     }
 
-    public void updateHospital(Hospital updateHospital){
+    public void updateHospital(Hospital updateHospital) {
         hospitalRepository.save(updateHospital);
     }
 

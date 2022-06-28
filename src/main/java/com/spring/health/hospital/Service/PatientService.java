@@ -1,6 +1,5 @@
 package com.spring.health.hospital.Service;
 
-import com.spring.health.hospital.Model.Doctor;
 import com.spring.health.hospital.Model.Patient;
 import com.spring.health.hospital.Model.RequestModel.AddPatient;
 import com.spring.health.hospital.Repository.DoctorRepository;
@@ -8,10 +7,6 @@ import com.spring.health.hospital.Repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.Query;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -27,17 +22,17 @@ public class PatientService {
         return patientRepository.findAll();
     }
 
-    public Patient getPatientById(String id) {
-        Optional<Patient> response = patientRepository.findById(id);
-        return response.get();
+    public Optional<Patient> getPatientById(String id) {
+        return patientRepository.findById(id);
     }
 
-    public void addPatient(AddPatient newPatient) {
+    public String addPatient(AddPatient newPatient) {
         Patient patient = new Patient();
         patient.setDoctor(doctorRepository.findById(newPatient.getD_id()).get());
         int one = (int) UUID.randomUUID().toString().charAt(0);
         int two = (int) UUID.randomUUID().toString().charAt(0);
-        patient.setP_id("p" + one + two);
+        String newId = "p" + one + two;
+        patient.setP_id(newId);
 
         patient.setFirstName(newPatient.getFirstName());
         patient.setLastName(newPatient.getLastName());
@@ -47,6 +42,7 @@ public class PatientService {
         patient.setGender(newPatient.getGender());
 
         patientRepository.save(patient);
+        return newId;
     }
 
     public boolean deletePatientById(String id) {

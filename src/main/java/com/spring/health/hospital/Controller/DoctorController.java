@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.print.Doc;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/doctor")
@@ -25,20 +25,26 @@ public class DoctorController {
 
     @RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
     public ResponseEntity getDoctorById(@PathVariable String id) {
-        Doctor response = doctorService.getDoctorById(id);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        Optional<Doctor> response = doctorService.getDoctorById(id);
+        if (response.isPresent()) {
+            return new ResponseEntity<>(response.get(), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ResponseEntity addNewDoctor(@RequestBody AddDoctor doctor) {
-        doctorService.addDoctor(doctor);
-        return new ResponseEntity(HttpStatus.OK);
+        String id = doctorService.addDoctor(doctor);
+        return new ResponseEntity(id, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
     public ResponseEntity deleteDoctorById(@PathVariable String id) {
-        doctorService.deleteDoctorById(id);
-        return new ResponseEntity(HttpStatus.OK);
+        boolean response = doctorService.deleteDoctorById(id);
+        if (response) {
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
 
 

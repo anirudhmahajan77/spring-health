@@ -23,17 +23,17 @@ public class DoctorService {
         return doctorRepository.findAll();
     }
 
-    public Doctor getDoctorById(String id) {
-        Optional<Doctor> response = doctorRepository.findById(id);
-        return response.get();
+    public Optional<Doctor> getDoctorById(String id) {
+        return doctorRepository.findById(id);
     }
 
-    public void addDoctor(AddDoctor newdoctor) {
+    public String addDoctor(AddDoctor newdoctor) {
         Doctor doctor = new Doctor();
         doctor.setHospital(hospitalRepository.findById(newdoctor.getH_id()).get());
         int one = (int) UUID.randomUUID().toString().charAt(0);
         int two = (int) UUID.randomUUID().toString().charAt(0);
-        doctor.setD_id("d" + one + two);
+        String newId = "d" + one + two;
+        doctor.setD_id(newId);
         doctor.setFirstName(newdoctor.getFirstName());
         doctor.setLastName(newdoctor.getLastName());
         doctor.setType(newdoctor.getType());
@@ -43,17 +43,18 @@ public class DoctorService {
         doctor.setGender(newdoctor.getGender());
 
         doctorRepository.save(doctor);
+        return "d" + one + two;
     }
 
-    public int deleteDoctorById(String id) {
+    public boolean deleteDoctorById(String id) {
         Optional<Doctor> data = doctorRepository.findById(id);
         if (data.isPresent()) {
             data.get().setHospital(null);
             doctorRepository.save(data.get());
             doctorRepository.delete(data.get());
-            return 1;
+            return true;
         }
-        return 0;
+        return false;
     }
 
     public void updateDoctor(Doctor updatedDoctor) {

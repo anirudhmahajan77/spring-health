@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/api/v1/patient")
 public class PatientController {
@@ -23,27 +25,30 @@ public class PatientController {
 
     @RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
     public ResponseEntity getPatientById(@PathVariable String id) {
-        Patient response = patientService.getPatientById(id);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        Optional<Patient> response = patientService.getPatientById(id);
+        if (response.isPresent()) {
+            return new ResponseEntity<>(response.get(), HttpStatus.OK);
+        }
+        return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ResponseEntity addNewPatient(@RequestBody AddPatient patient) {
-        patientService.addPatient(patient);
-        return new ResponseEntity(HttpStatus.OK);
+        String id = patientService.addPatient(patient);
+        return new ResponseEntity(id, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
     public ResponseEntity deletePatientById(@PathVariable String id) {
         boolean result = patientService.deletePatientById(id);
-        if(!result){
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        if (result) {
+            return new ResponseEntity(HttpStatus.OK);
         }
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.PUT)
-    public ResponseEntity updatePatient(@RequestBody Patient updatedPatient){
+    public ResponseEntity updatePatient(@RequestBody Patient updatedPatient) {
         patientService.updatePatient(updatedPatient);
         return new ResponseEntity(HttpStatus.OK);
     }
